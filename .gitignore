@@ -45,3 +45,31 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.classpath
+.mvn/wrapper/maven-wrapper.jar
+.settings/org.eclipse.core.resources.prefs
+.project
+database.trace.db
+.mvn/wrapper/maven-wrapper.properties
+.settings/org.eclipse.m2e.core.prefs
+database.mv.db
+mvnw
+mvnw.cmd
+keystore.p12
+h2-1.4.188.jar
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.wst.common.project.facet.core.xml
+target/AquaPi-0.0.1-SNAPSHOT.jar
+target/AquaPi-0.0.1-SNAPSHOT.jar.original
+target/classes/application.properties
+target/classes/org/aqpi/outlet/OutletLogEntity.class
+*.class
+target/classes/quartz.properties
+target/classes/static/index.html
+target/maven-archiver/pom.properties
+target/surefire-reports/TEST-org.aqpi.AquaPiApplicationTests.xml
+target/surefire-reports/org.aqpi.AquaPiApplicationTests.txt
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst

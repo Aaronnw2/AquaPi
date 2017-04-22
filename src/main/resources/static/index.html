@@ -1,0 +1,80 @@
+<html>
+    hello world
+    <div>
+        Trigger response:<span id="triggerResponse"></span>
+    </div>
+    <div>
+        Outlet repsonse:<span id="outletResponse"></span>
+    </div>
+    <div>
+        Temperature repsonse:<span id="tempResponse"></span>
+    </div>
+    <div>
+        Outlet history:<span id="outletHistoryResponse"></span>
+    </div>
+    <script type="text/javascript">
+    window.onload = function () {
+        getTriggers();
+        getOutlets();
+        getTemps();
+        getHistory();
+    }
+
+    function getOutlets() {
+        outletsRequest = new XMLHttpRequest();
+        outletsRequest.onload = function() {
+            var state = this.readyState;
+            var responseCode = outletsRequest.status;
+            if (state == this.DONE && responseCode == 200) {
+                var responseData = this.responseText;
+                document.getElementById("outletResponse").innerText = responseData;
+            }
+        };
+        outletsRequest.open("GET", "/outlets");
+        outletsRequest.send(null);
+    }
+
+    function getTriggers() {
+        triggerRequest = new XMLHttpRequest();
+        triggerRequest.onload = function() {
+            var state = this.readyState;
+            var responseCode = triggerRequest.status;
+            if (state == this.DONE && responseCode == 200) {
+                var responseData = this.responseText;
+                document.getElementById("triggerResponse").innerText = responseData;
+            }
+        };
+        triggerRequest.open("GET", "/triggers");
+        triggerRequest.send(null);
+    }
+
+    function getTemps() {
+        triggerRequest = new XMLHttpRequest();
+        triggerRequest.onload = function() {
+            var state = this.readyState;
+            var responseCode = triggerRequest.status;
+            if (state == this.DONE && responseCode == 200) {
+                var responseData = this.responseText;
+                document.getElementById("tempResponse").innerText = responseData;
+            }
+        };
+        triggerRequest.open("GET", "/temps");
+        triggerRequest.send(null);
+    }
+
+    function getHistory() {
+        outletsRequest = new XMLHttpRequest();
+        outletsRequest.onload = function() {
+            var state = this.readyState;
+            var responseCode = outletsRequest.status;
+            if (state == this.DONE && responseCode == 200) {
+                var responseData = this.responseText;
+                document.getElementById("outletHistoryResponse").innerText = responseData;
+            }
+        };
+        outletsRequest.open("GET", "/outlets/history");
+        outletsRequest.send(null);
+    }
+    </script>
+</html>
+
