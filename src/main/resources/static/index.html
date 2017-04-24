@@ -1,80 +1,77 @@
-<html>
-    hello world
-    <div>
-        Trigger response:<span id="triggerResponse"></span>
-    </div>
-    <div>
-        Outlet repsonse:<span id="outletResponse"></span>
-    </div>
-    <div>
-        Temperature repsonse:<span id="tempResponse"></span>
-    </div>
-    <div>
-        Outlet history:<span id="outletHistoryResponse"></span>
-    </div>
-    <script type="text/javascript">
-    window.onload = function () {
-        getTriggers();
-        getOutlets();
-        getTemps();
-        getHistory();
-    }
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
 
-    function getOutlets() {
-        outletsRequest = new XMLHttpRequest();
-        outletsRequest.onload = function() {
-            var state = this.readyState;
-            var responseCode = outletsRequest.status;
-            if (state == this.DONE && responseCode == 200) {
-                var responseData = this.responseText;
-                document.getElementById("outletResponse").innerText = responseData;
-            }
-        };
-        outletsRequest.open("GET", "/outlets");
-        outletsRequest.send(null);
-    }
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Polymer Starter Kit">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    function getTriggers() {
-        triggerRequest = new XMLHttpRequest();
-        triggerRequest.onload = function() {
-            var state = this.readyState;
-            var responseCode = triggerRequest.status;
-            if (state == this.DONE && responseCode == 200) {
-                var responseData = this.responseText;
-                document.getElementById("triggerResponse").innerText = responseData;
-            }
-        };
-        triggerRequest.open("GET", "/triggers");
-        triggerRequest.send(null);
-    }
+    <title>Aqua Pi</title>
+    <meta name="description" content="Aqua Pi API Client">
 
-    function getTemps() {
-        triggerRequest = new XMLHttpRequest();
-        triggerRequest.onload = function() {
-            var state = this.readyState;
-            var responseCode = triggerRequest.status;
-            if (state == this.DONE && responseCode == 200) {
-                var responseData = this.responseText;
-                document.getElementById("tempResponse").innerText = responseData;
-            }
-        };
-        triggerRequest.open("GET", "/temps");
-        triggerRequest.send(null);
-    }
+    <link rel="icon" href="/images/favicon.ico">
 
-    function getHistory() {
-        outletsRequest = new XMLHttpRequest();
-        outletsRequest.onload = function() {
-            var state = this.readyState;
-            var responseCode = outletsRequest.status;
-            if (state == this.DONE && responseCode == 200) {
-                var responseData = this.responseText;
-                document.getElementById("outletHistoryResponse").innerText = responseData;
-            }
-        };
-        outletsRequest.open("GET", "/outlets/history");
-        outletsRequest.send(null);
-    }
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- See https://goo.gl/qRE0vM -->
+    <meta name="theme-color" content="#3f51b5">
+
+    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Aqua Pi">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aqua Pi">
+
+    <!-- Homescreen icons -->
+    <link rel="apple-touch-icon" href="/images/manifest/icon-48x48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/manifest/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/images/manifest/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/manifest/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/manifest/icon-192x192.png">
+
+    <!-- Tile icon for Windows 8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/images/manifest/icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#3f51b5">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Load and register pre-caching Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
     </script>
-</html>
+    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <!-- Load your application shell -->
+    <link rel="import" href="/src/aqpi-app.html">
 
+    <!-- Add any global styles for body, document, etc. -->
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        line-height: 1.5;
+        min-height: 100vh;
+        background-color: #eeeeee;
+      }
+    </style>
+  </head>
+  <body>
+    <aqpi-app></aqpi-app>
+  </body>
+</html>

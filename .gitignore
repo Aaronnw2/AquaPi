@@ -73,3 +73,5 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputF
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+src/main/resources/static/.eslintrc.json
+src/main/resources/static/.travis.yml
