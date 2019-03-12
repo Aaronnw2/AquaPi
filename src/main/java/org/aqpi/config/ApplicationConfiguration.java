@@ -19,16 +19,15 @@ import com.pi4j.io.gpio.GpioFactory;
 @Configuration
 public class ApplicationConfiguration {
 
+	private static final String QUARTZ_PROPERTIES_FILE = "/quartz.properties";
+	
 	@Bean
 	public GpioController getGpioController() {
 		return GpioFactory.getInstance();
 	}
 
-	private static final String QUARTZ_PROPERTIES_FILE = "/quartz.properties";
-
 	@Bean
-    public JobFactory jobFactory(ApplicationContext applicationContext)
-    {
+    public JobFactory jobFactory(ApplicationContext applicationContext) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;

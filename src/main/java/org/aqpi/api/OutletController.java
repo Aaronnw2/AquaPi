@@ -56,4 +56,16 @@ public class OutletController {
 	public ResponseEntity<List<OutletLog>> getOutletLog() {
 		return new ResponseEntity<List<OutletLog>>(delegate.getOutletLog(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(path="/outlets/history/old", method=DELETE)
+	public ResponseEntity<List<OutletLog>> purgeRecentOutletLog() {
+		delegate.purgeOldOutletHistory();
+		return new ResponseEntity<List<OutletLog>>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(path="/outlets/history/all", method=DELETE)
+	public ResponseEntity<List<OutletLog>> purgeAllOutletLog() {
+		delegate.purgeAllOutletHistory();
+		return new ResponseEntity<List<OutletLog>>(HttpStatus.OK);
+	}
 }

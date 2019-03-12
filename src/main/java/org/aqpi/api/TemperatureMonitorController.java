@@ -7,6 +7,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.List;
 
 import org.aqpi.api.model.exception.BadRequestException;
+import org.aqpi.api.model.exception.InternalErrorException;
 import org.aqpi.model.temperature.TemperatureMonitorSchedule;
 import org.aqpi.model.temperature.TemperatureRecord;
 import org.aqpi.temperature.TemperatureMonitorDelegate;
@@ -29,6 +30,11 @@ public class TemperatureMonitorController {
 		return new ResponseEntity<List<TemperatureRecord>>(delegate.getTemperatures(), HttpStatus.OK);
 	}
 	
+	@RequestMapping(path="/temps", method=POST)
+	public ResponseEntity<TemperatureRecord> recordTemperature() throws InternalErrorException {
+		return new ResponseEntity<TemperatureRecord>(delegate.recordNewTemperature(), HttpStatus.OK);
+	}
+	
 	@RequestMapping(path="/temps/schedule", method=GET)
 	public ResponseEntity<TemperatureMonitorSchedule> getSchedule() throws SchedulerException {
 		return new ResponseEntity<TemperatureMonitorSchedule>(delegate.getTemperatureMonitoringSchedule(), HttpStatus.OK);
@@ -44,6 +50,18 @@ public class TemperatureMonitorController {
 	@RequestMapping(path="/temps/schedule", method=DELETE)
 	public ResponseEntity<Void> deleteSchedule() throws SchedulerException {
 		delegate.deleteTemperatureMonitorSchedule();
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(path="/temps", method=DELETE)
+	public ResponseEntity<Void> deleteTemperatureHistory() throws SchedulerException {
+		delegate.deleteTemperatureHistory();
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(path="/temps/old", method=DELETE)
+	public ResponseEntity<Void> deleteOldTemperatureHistory() throws SchedulerException {
+		delegate.purgeOldTemperatureHistory();
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

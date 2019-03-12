@@ -1,5 +1,6 @@
 package org.aqpi.outlet;
 
+import static com.pi4j.io.gpio.PinMode.DIGITAL_OUTPUT;
 import static com.pi4j.io.gpio.PinState.HIGH;
 import static com.pi4j.io.gpio.PinState.LOW;
 import static com.pi4j.io.gpio.RaspiPin.getPinByAddress;
@@ -7,6 +8,9 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,12 +32,14 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 
 @Service
+@Transactional
 public class OutletDelegate {
 
 	@Autowired
@@ -65,13 +71,15 @@ public class OutletDelegate {
 
 	public List<OutletInformation> getOutlets() {
 		return controller.getProvisionedPins().stream()
-			.map(pin -> buildOutletInformation((GpioPinDigitalOutput)pin))
-			.collect(toList());
+				.filter(pin -> pin.getMode().equals(DIGITAL_OUTPUT))
+				.map(pin -> buildOutletInformation((GpioPinDigitalOutput)pin))
+				.collect(toList());
 	}
 	
 	public void setOutletToState(String outletName, OutletState state) throws BadRequestException {
+		if (controller.getProvisionedPin(outletName) == null) { throw new BadRequestException("Invalid outlet: " + outletName); }
 		LOG.info("Setting outlet: " + outletName + " to: " + state);
-		controller.setState(StateMap.getPinState(state), 
+		controller.setState(StateMap.getPinState(state),
 				(GpioPinDigitalOutput)controller.getProvisionedPin(outletName));
 		logRepository.save(new OutletLogEntity(outletName, state.getValue()));
 	}
@@ -94,6 +102,15 @@ public class OutletDelegate {
 		return stream(logRepository.findAll().spliterator(), false)
 				.map(entity -> buildOutletLog(entity))
 				.collect(toList());
+	}
+	
+	public void purgeOldOutletHistory() {
+		LocalDate purgeDate = LocalDate.now().minusDays(1);
+		logRepository.deleteByTimeBefore(Date.from(purgeDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	}
+	
+	public void purgeAllOutletHistory() {
+		logRepository.deleteAll();
 	}
 
 	public Boolean isOutletProvisioned(String outletName) {

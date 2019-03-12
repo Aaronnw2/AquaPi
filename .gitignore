@@ -75,3 +75,5 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/create
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 src/main/resources/static/.eslintrc.json
 src/main/resources/static/.travis.yml
+target/classes/META-INF/MANIFEST.MF
+target/classes/META-INF/maven/org.aqpi/AquaPi/pom.properties
