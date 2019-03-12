@@ -23,6 +23,7 @@ import org.aqpi.api.model.exception.InternalErrorException;
 import org.aqpi.model.temperature.TemperatureMonitorSchedule;
 import org.aqpi.model.temperature.TemperatureRecord;
 import org.aqpi.purge.PurgeOutletHistoryJob;
+import org.aqpi.temperature.TemperatureRecordEntity;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -56,7 +57,7 @@ public class TemperatureMonitorDelegate {
 	private static final String HISTORY_PURGE_TRIGGER_NAME = "tempPurgeTrigger";
 	private static final String HISTORY_PURGE_JOB_NAME = "tempPurgeJob";
 	private static final String HISTORY_PURGE_JOB_GROUP = "tempPurgeJobGroup";
-	private static final String ONCE_A_DAY_CRON_EXPRESSION = "0 0 12 * * ?";
+	private static final String ONCE_A_DAY_CRON_EXPRESSION = "0 0 0 * * ?";
 	private static final String SENSOR_FILE = "/sys/bus/w1/devices/28-000006d6fd4d/w1_slave";
 
 	@PostConstruct
@@ -128,7 +129,8 @@ public class TemperatureMonitorDelegate {
 
 	public void purgeOldTemperatureHistory() {
 		LocalDateTime purgeDate = LocalDateTime.now().minusDays(1);
-		temperatureRepository.deleteByTimeBefore(Date.from(purgeDate.atZone(ZoneId.systemDefault()).toInstant()));
+		int rowsDeleted = temperatureRepository.deleteByTimeBefore(Date.from(purgeDate.atZone(ZoneId.systemDefault()).toInstant()));
+		LOG.info("Removed " + rowsDeleted + " temperature records");
 	}
 	
 	public void deleteTemperaturePurgeSchedule() throws SchedulerException {
