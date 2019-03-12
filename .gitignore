@@ -52,6 +52,8 @@ Temporary Items
 database.trace.db
 .mvn/wrapper/maven-wrapper.properties
 .settings/org.eclipse.m2e.core.prefs
+.settings/
+target/
 database.mv.db
 mvnw
 mvnw.cmd
