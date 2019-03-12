@@ -53,6 +53,12 @@ public class TemperatureMonitorController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
+	@RequestMapping(path="/temps/purge/schedule", method=DELETE)
+	public ResponseEntity<Void> deletePurgeSchedule() throws SchedulerException {
+		delegate.deleteTemperaturePurgeSchedule();
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
 	@RequestMapping(path="/temps", method=DELETE)
 	public ResponseEntity<Void> deleteTemperatureHistory() throws SchedulerException {
 		delegate.deleteTemperatureHistory();

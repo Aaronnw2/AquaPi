@@ -1,7 +1,5 @@
 package org.aqpi.purge;
 
-import javax.transaction.Transactional;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.aqpi.temperature.TemperatureMonitorDelegate;
@@ -18,7 +16,6 @@ public class PurgeTemperatureHistoryJob implements Job {
 	private static final Logger LOG = LogManager.getLogger(PurgeTemperatureHistoryJob.class);
 	
 	@Override
-	@Transactional
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		delegate.purgeOldTemperatureHistory();
 		LOG.info("Temperature data purged for records before yesterday");

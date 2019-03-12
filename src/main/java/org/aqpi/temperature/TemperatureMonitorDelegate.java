@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class TemperatureMonitorDelegate {
 					.withIdentity(HISTORY_PURGE_TRIGGER_NAME, HISTORY_PURGE_TRIGGER_GROUP)
 					.withSchedule(cronSchedule(ONCE_A_DAY_CRON_EXPRESSION))
 					.forJob(job)
-					.startNow()
+					.startAt(fiveMinutesInTheFuture())
 					.build();
 			scheduler.scheduleJob(job, trigger);
 		}
@@ -130,9 +131,24 @@ public class TemperatureMonitorDelegate {
 		temperatureRepository.deleteByTimeBefore(Date.from(purgeDate.atZone(ZoneId.systemDefault()).toInstant()));
 	}
 	
+	public void deleteTemperaturePurgeSchedule() throws SchedulerException {
+		TriggerKey triggerKey = new TriggerKey(HISTORY_PURGE_TRIGGER_NAME, HISTORY_PURGE_TRIGGER_GROUP);
+		if (scheduler.checkExists(triggerKey)) {
+			scheduler.unscheduleJob(triggerKey);
+			scheduler.deleteJob(new JobKey(HISTORY_PURGE_JOB_NAME, HISTORY_PURGE_JOB_GROUP));
+		}
+	}
+	
 	private TemperatureMonitorSchedule buildTemperatureSchedule(List<? extends Trigger> triggers) {
 		if (triggers.isEmpty()) { return new TemperatureMonitorSchedule(); }
 		CronTrigger trigger = (CronTrigger) triggers.get(0);
 		return new TemperatureMonitorSchedule(trigger.getNextFireTime(), trigger.getCronExpression());
+	}
+	
+	private Date fiveMinutesInTheFuture() {
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(new Date());
+	    cal.add(Calendar.MINUTE, 5);
+	    return cal.getTime();
 	}
 }
