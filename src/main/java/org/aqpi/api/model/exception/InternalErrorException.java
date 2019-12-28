@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value=INTERNAL_SERVER_ERROR)
-public class InternalErrorException extends Exception {
+public class InternalErrorException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public InternalErrorException(String message) {

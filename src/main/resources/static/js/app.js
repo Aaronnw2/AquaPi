@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#outletContainer").show()
+    $("#controlContainer").show()
     $("#triggerContainer").hide()
     $("#historyContainer").hide()
     getOutlets()
@@ -8,7 +8,7 @@ $(document).ready(function () {
 loading = [{"outlets": false}, {"schedule": false}, {"history": false}]
 
 function showControl() {
-    $("#outletContainer").show()
+    $("#controlContainer").show()
     $("#controlLink").addClass('active')
     $("#triggerContainer").hide()
     $("#scheduleLink").removeClass('active')
@@ -21,7 +21,7 @@ function showControl() {
 function showSchedule() {
     $("#triggerContainer").show()
     $("#scheduleLink").addClass('active')
-    $("#outletContainer").hide()
+    $("#controlContainer").hide()
     $("#controlLink").removeClass('active')
     $("#historyContainer").hide()
     $('#historyLink').removeClass('active')
@@ -32,7 +32,7 @@ function showSchedule() {
 function showHistory() {
     $("#historyContainer").show()
     $("#historyLink").addClass('active')
-    $("#outletContainer").hide()
+    $("#controlContainer").hide()
     $("#controlLink").removeClass('active')
     $("#triggerContainer").hide()
     $('#scheduleLink').removeClass('active')

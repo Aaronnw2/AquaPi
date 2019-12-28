@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +21,7 @@ import org.apache.log4j.Logger;
 import org.aqpi.api.model.exception.InternalErrorException;
 import org.aqpi.model.temperature.TemperatureMonitorSchedule;
 import org.aqpi.model.temperature.TemperatureRecord;
-import org.aqpi.purge.PurgeOutletHistoryJob;
-import org.aqpi.temperature.TemperatureRecordEntity;
+import org.aqpi.purge.PurgeTemperatureHistoryJob;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -48,7 +46,7 @@ public class TemperatureMonitorDelegate {
 
 	private static final Logger LOG = LogManager.getLogger(TemperatureMonitorDelegate.class);
 
-	public static final String TEMP_MONITOR_JOB_NAME = "temperatureMonitorJob";
+	private static final String TEMP_MONITOR_JOB_NAME = "temperatureMonitorJob";
 	private static final String TEMP_TRIGGER_GROUP = "temperatureTriggerGroup";
 	private static final String TEMP_JOB_GROUP = "temperatureJobGroup";
 	private static final String TEMP_TRIGGER_NAME = "temperatureTrigger";
@@ -64,14 +62,14 @@ public class TemperatureMonitorDelegate {
 	private void maybeSetupHistoryPurge() throws SchedulerException {
 		if (!scheduler.checkExists(new TriggerKey(HISTORY_PURGE_TRIGGER_NAME, HISTORY_PURGE_TRIGGER_GROUP))) {
 			LOG.info("Creating default temperature purge job");
-			JobDetail job = JobBuilder.newJob(PurgeOutletHistoryJob.class)
+			JobDetail job = JobBuilder.newJob(PurgeTemperatureHistoryJob.class)
 					.withIdentity(HISTORY_PURGE_JOB_NAME, HISTORY_PURGE_JOB_GROUP)
 					.build();
 			Trigger trigger = TriggerBuilder.newTrigger()
 					.withIdentity(HISTORY_PURGE_TRIGGER_NAME, HISTORY_PURGE_TRIGGER_GROUP)
 					.withSchedule(cronSchedule(ONCE_A_DAY_CRON_EXPRESSION))
 					.forJob(job)
-					.startAt(fiveMinutesInTheFuture())
+					.startNow()
 					.build();
 			scheduler.scheduleJob(job, trigger);
 		}
@@ -145,12 +143,5 @@ public class TemperatureMonitorDelegate {
 		if (triggers.isEmpty()) { return new TemperatureMonitorSchedule(); }
 		CronTrigger trigger = (CronTrigger) triggers.get(0);
 		return new TemperatureMonitorSchedule(trigger.getNextFireTime(), trigger.getCronExpression());
-	}
-	
-	private Date fiveMinutesInTheFuture() {
-		Calendar cal = Calendar.getInstance();
-	    cal.setTime(new Date());
-	    cal.add(Calendar.MINUTE, 5);
-	    return cal.getTime();
 	}
 }
