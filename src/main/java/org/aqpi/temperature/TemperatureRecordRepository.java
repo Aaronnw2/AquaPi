@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface TemperatureRecordRepository extends CrudRepository<TemperatureRecordEntity, Long>{
 	@Modifying
 	int deleteByTimeBefore(Date purgeAfterDate);
+	TemperatureRecordEntity findFirstByOrderByTimeDesc();
 }

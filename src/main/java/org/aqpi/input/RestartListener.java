@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class RestartListener {
 	
 	private static final String RESTART_PIN_NAME = "RESTART";
 
-	private static final Logger LOG = LogManager.getLogger(RestartListener.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RestartListener.class);
 	
 	@Autowired
 	private GpioController gpioController;

@@ -17,8 +17,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.aqpi.api.model.exception.InternalErrorException;
 import org.aqpi.model.temperature.TemperatureMonitorSchedule;
 import org.aqpi.model.temperature.TemperatureRecord;
@@ -33,6 +31,8 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ public class TemperatureMonitorDelegate {
 	@Autowired
 	private TemperatureRecordRepository temperatureRepository;
 
-	private static final Logger LOG = LogManager.getLogger(TemperatureMonitorDelegate.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TemperatureMonitorDelegate.class);
 
 	public static final String TEMP_MONITOR_JOB_NAME = "temperatureMonitorJob";
 	private static final String TEMP_TRIGGER_GROUP = "temperatureTriggerGroup";
@@ -81,6 +81,11 @@ public class TemperatureMonitorDelegate {
 		return stream(temperatureRepository.findAll().spliterator(), false)
 				.map(record -> new TemperatureRecord(record.getTime(), record.getTemperature()))
 				.collect(toList());
+	}
+	
+	public TemperatureRecord getLatestTemperature() {
+		TemperatureRecordEntity temperature = temperatureRepository.findFirstByOrderByTimeDesc();
+		return new TemperatureRecord(temperature.getTime(), temperature.getTemperature());
 	}
 
 	public TemperatureRecord recordNewTemperature() throws InternalErrorException {

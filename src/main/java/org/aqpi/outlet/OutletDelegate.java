@@ -15,8 +15,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.aqpi.api.model.OutletState;
 import org.aqpi.api.model.exception.BadRequestException;
 import org.aqpi.api.model.exception.NotFoundException;
@@ -30,6 +28,8 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +51,7 @@ public class OutletDelegate {
 	@Autowired
 	private Scheduler scheduler;
 	
-	private static final Logger LOG  = LogManager.getLogger(OutletDelegate.class);
+	private static final Logger LOG  = LoggerFactory.getLogger(OutletDelegate.class);
 	
 	private static final String HISTORY_PURGE_TRIGGER_GROUP = "historyPurgeTriggerGroup";
 	private static final String HISTORY_PURGE_TRIGGER_NAME = "historyPurgeTrigger";

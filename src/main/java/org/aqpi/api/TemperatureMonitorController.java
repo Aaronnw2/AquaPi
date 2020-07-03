@@ -30,6 +30,11 @@ public class TemperatureMonitorController {
 		return new ResponseEntity<List<TemperatureRecord>>(delegate.getTemperatures(), HttpStatus.OK);
 	}
 	
+	@RequestMapping(path="/temps/latest", method=GET)
+	public ResponseEntity<TemperatureRecord> getLatestTemperature() throws SchedulerException {
+		return new ResponseEntity<TemperatureRecord>(delegate.getLatestTemperature(), HttpStatus.OK);
+	}
+	
 	@RequestMapping(path="/temps", method=POST)
 	public ResponseEntity<TemperatureRecord> recordTemperature() throws InternalErrorException {
 		return new ResponseEntity<TemperatureRecord>(delegate.recordNewTemperature(), HttpStatus.OK);

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,7 +33,7 @@ public class SecurityConfiguration extends GlobalAuthenticationConfigurerAdapter
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				UserEntity user = userRepository.findByUserName(username);
 				if(user != null) {
-					return new User(user.getUserName(), user.getPassword(), true, true, true, true,
+					return new User(user.getUserName(), "{noop}" + user.getPassword(), true, true, true, true,
 							AuthorityUtils.createAuthorityList("USER"));
 				} else {
 					throw new UsernameNotFoundException("could not find the user: " + username);
@@ -50,9 +50,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.portMapper()
-			.http(80)
-			.mapsTo(443);
 		
 		http.authorizeRequests()
 			.anyRequest()
