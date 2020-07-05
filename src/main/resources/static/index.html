@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
-
     #chart div {
       font: 10px sans-serif;
       background-color: steelblue;
@@ -15,8 +15,7 @@
       margin: 1px;
       color: white;
     }
-    
-    </style>
+  </style>
   <title>AqPi v2.0</title>
 </head>
 
@@ -28,10 +27,11 @@
     <ul class="nav navbar-nav navbar-right">
       <li>
         <button type="button" class="navbar-toggler" onclick="refresh()">
-          <img src="assets/reload.svg" / width="30" height="30">
+          <img src="assets/reload.svg" width="30" height="30">
         </button>
-        <button id="hamburgerMenu" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler"
-          aria-expanded="false" aria-label="Toggle navigation">
+        <button id="hamburgerMenu" class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </li>
@@ -55,11 +55,68 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
     </div>
   </div>
-  <div id="outletContainer" class="container bp-4"></div>
+  <div id="controlContainer">
+    <div id="outletContainer" class="container bp-4">
+    </div>
+    <div id="plantedPlusContainer" class="container card bp-4">
+      <div class="row buttonRow">
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('power')">Power</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('247')">24 / 7</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('moon')">Moonlight</button>
+        </div>
+      </div>
+      <div class="row buttonRow">
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('storm')">Storm</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('max')">Maximum</button>
+        </div>
+      </div>
+      <div class="row buttonRow">
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('12am')">12:00 Am</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('3am')">3:00 Am</button>
+        </div>
+      </div>
+      <div class="row buttonRow">
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('6am')">6:00 Am</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('9am')">9:00 Am</button>
+        </div>
+      </div>
+      <div class="row buttonRow">
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('12pm')">12:00 Pm</button>
+        </div>
+        <div class="col-sm text-center">
+          <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('3pm')">3:00 Pm</button>
+        </div>
+      </div>
+        <div class="row buttonRow">
+          <div class="col-sm text-center">
+            <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('6pm')">6:00 Pm</button>
+          </div>
+          <div class="col-sm text-center">
+            <button class="btn btn-primary mx-auto" onclick="sendPlantedPlusCommand('9pm')">9:00 Pm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="triggerContainer" class="container bp-4">
     <div class="card mb-3">
-      <button id="addCollapseButton" class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseAddTrigger"
-        aria-expanded="false" aria-controls="collapseAddTrigger">
+      <button id="addCollapseButton" class="btn btn-light" type="button" data-toggle="collapse"
+        data-target="#collapseAddTrigger" aria-expanded="false" aria-controls="collapseAddTrigger">
         Add New
       </button>
       <div class="collapse" id="collapseAddTrigger">
@@ -114,11 +171,13 @@
                 <label class="form-check-label" for="sunCheck">Sun</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="weekdayCheck" onclick="setCheckBoxes('weekday', this)">
+                <input class="form-check-input" type="checkbox" id="weekdayCheck"
+                  onclick="setCheckBoxes('weekday', this)">
                 <label class="form-check-label" for="weekdayCheck">Weekdays</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="weekendCheck" onclick="setCheckBoxes('weekend', this)">
+                <input class="form-check-input" type="checkbox" id="weekendCheck"
+                  onclick="setCheckBoxes('weekend', this)">
                 <label class="form-check-label" for="weekendCheck">Weekends</label>
               </div>
               <div>
@@ -149,13 +208,22 @@
     </table>
   </div>
   <div id="alert"></div>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/outlet.js"></script>
+  <script src="js/control.js"></script>
   <script src="js/trigger.js"></script>
   <script src="js/history.js"></script>
 </body>
+<style>
+  .buttonRow {
+    padding-top: .75em;
+    padding-bottom: .75em;
+  }
+</style>
 
 </html>
