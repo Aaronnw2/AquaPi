@@ -6,6 +6,7 @@ import static com.pi4j.io.gpio.PinState.LOW;
 import static com.pi4j.io.gpio.RaspiPin.getPinByAddress;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static org.aqpi.api.feeder.FeederDelegate.FEEDER_PIN_NAME;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 
 import java.time.LocalDate;
@@ -66,14 +67,21 @@ public class OutletDelegate {
 		pinRepository.findAll().forEach(
 				pinEntity -> controller.provisionDigitalOutputPin(getPinByAddress(pinEntity.getPin()),
 						pinEntity.getName(), LOW));
+		controller.getProvisionedPins().forEach(pin -> LOG.info("Provisioned pin: {}, {}, {}",
+				pin.getPin(), pin.getName(), pin.getMode()));
 		maybeSetupPurgeLogJob();
 	}
 
 	public List<OutletInformation> getOutlets() {
 		return controller.getProvisionedPins().stream()
 				.filter(pin -> pin.getMode().equals(DIGITAL_OUTPUT))
+				.filter(pin -> !pin.getName().equals(FEEDER_PIN_NAME))
 				.map(pin -> buildOutletInformation((GpioPinDigitalOutput)pin))
 				.collect(toList());
+	}
+	
+	public OutletInformation getOutlet(String name) {
+		return buildOutletInformation((GpioPinDigitalOutput)controller.getProvisionedPin(name));
 	}
 	
 	public void setOutletToState(String outletName, OutletState state) throws BadRequestException {
@@ -170,4 +178,5 @@ public class OutletDelegate {
 			return null;
 		}
 	}
+
 }

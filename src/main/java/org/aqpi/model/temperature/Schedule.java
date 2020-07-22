@@ -2,17 +2,17 @@ package org.aqpi.model.temperature;
 
 import java.util.Date;
 
-public class TemperatureMonitorSchedule {
+public class Schedule {
 
 	private String cronExpression;
 	private Date nextFireTime;
 	
-	public TemperatureMonitorSchedule(Date inNextTime, String inCron) {
+	public Schedule(Date inNextTime, String inCron) {
 		this.cronExpression = inCron;
 		this.nextFireTime = inNextTime;
 	}
 	
-	public TemperatureMonitorSchedule() {
+	public Schedule() {
 		this.cronExpression = "none";
 		this.nextFireTime = null;
 	}

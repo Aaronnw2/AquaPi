@@ -18,10 +18,9 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.aqpi.api.model.exception.InternalErrorException;
-import org.aqpi.model.temperature.TemperatureMonitorSchedule;
+import org.aqpi.model.temperature.Schedule;
 import org.aqpi.model.temperature.TemperatureRecord;
 import org.aqpi.purge.PurgeOutletHistoryJob;
-import org.aqpi.temperature.TemperatureRecordEntity;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -58,7 +57,7 @@ public class TemperatureMonitorDelegate {
 	private static final String HISTORY_PURGE_JOB_NAME = "tempPurgeJob";
 	private static final String HISTORY_PURGE_JOB_GROUP = "tempPurgeJobGroup";
 	private static final String ONCE_A_DAY_CRON_EXPRESSION = "0 0 0 * * ?";
-	private static final String SENSOR_FILE = "/sys/bus/w1/devices/28-000006d6fd4d/w1_slave";
+	private static final String SENSOR_FILE = "/sys/bus/w1/devices/28-000006d83d20/w1_slave";
 
 	@PostConstruct
 	private void maybeSetupHistoryPurge() throws SchedulerException {
@@ -117,7 +116,7 @@ public class TemperatureMonitorDelegate {
 		scheduler.scheduleJob(job, newTrigger);
 	}
 
-	public TemperatureMonitorSchedule getTemperatureMonitoringSchedule() throws SchedulerException {
+	public Schedule getTemperatureMonitoringSchedule() throws SchedulerException {
 		return buildTemperatureSchedule(scheduler.getTriggersOfJob(new JobKey(TEMP_MONITOR_JOB_NAME, TEMP_JOB_GROUP)));
 	}
 
@@ -146,10 +145,10 @@ public class TemperatureMonitorDelegate {
 		}
 	}
 	
-	private TemperatureMonitorSchedule buildTemperatureSchedule(List<? extends Trigger> triggers) {
-		if (triggers.isEmpty()) { return new TemperatureMonitorSchedule(); }
+	private Schedule buildTemperatureSchedule(List<? extends Trigger> triggers) {
+		if (triggers.isEmpty()) { return new Schedule(); }
 		CronTrigger trigger = (CronTrigger) triggers.get(0);
-		return new TemperatureMonitorSchedule(trigger.getNextFireTime(), trigger.getCronExpression());
+		return new Schedule(trigger.getNextFireTime(), trigger.getCronExpression());
 	}
 	
 	private Date fiveMinutesInTheFuture() {

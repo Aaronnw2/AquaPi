@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.aqpi.api.model.exception.BadRequestException;
 import org.aqpi.api.model.exception.InternalErrorException;
-import org.aqpi.model.temperature.TemperatureMonitorSchedule;
+import org.aqpi.model.temperature.Schedule;
 import org.aqpi.model.temperature.TemperatureRecord;
 import org.aqpi.temperature.TemperatureMonitorDelegate;
 import org.quartz.SchedulerException;
@@ -41,8 +41,8 @@ public class TemperatureMonitorController {
 	}
 	
 	@RequestMapping(path="/temps/schedule", method=GET)
-	public ResponseEntity<TemperatureMonitorSchedule> getSchedule() throws SchedulerException {
-		return new ResponseEntity<TemperatureMonitorSchedule>(delegate.getTemperatureMonitoringSchedule(), HttpStatus.OK);
+	public ResponseEntity<Schedule> getSchedule() throws SchedulerException {
+		return new ResponseEntity<Schedule>(delegate.getTemperatureMonitoringSchedule(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(path="/temps/schedule", method=POST)

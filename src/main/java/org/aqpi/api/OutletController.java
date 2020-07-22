@@ -52,6 +52,12 @@ public class OutletController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
+	@RequestMapping(path="/outlets/{name}", method=GET)
+	public ResponseEntity<OutletInformation> getOutlet(@PathVariable("name") String name) throws NotFoundException {
+		delegate.removeOutlet(name);
+		return new ResponseEntity<OutletInformation>(delegate.getOutlet(name), HttpStatus.OK);
+	}
+	
 	@RequestMapping(path="/outlets/history", method=GET)
 	public ResponseEntity<List<OutletLog>> getOutletLog() {
 		return new ResponseEntity<List<OutletLog>>(delegate.getOutletLog(), HttpStatus.OK);
