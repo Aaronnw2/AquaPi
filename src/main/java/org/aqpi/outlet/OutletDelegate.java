@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 
@@ -81,7 +82,10 @@ public class OutletDelegate {
 	}
 	
 	public OutletInformation getOutlet(String name) {
-		return buildOutletInformation((GpioPinDigitalOutput)controller.getProvisionedPin(name));
+		GpioPin pin = controller.getProvisionedPin(name);
+		if (null == pin) { throw new NotFoundException("Pin " + name + " not found"); }
+		LOG.info(pin.getName() + " " + ((GpioPinDigitalOutput)pin).getState()); 
+		return buildOutletInformation((GpioPinDigitalOutput)pin);
 	}
 	
 	public void setOutletToState(String outletName, OutletState state) throws BadRequestException {

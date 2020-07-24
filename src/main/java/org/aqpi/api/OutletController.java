@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.aqpi.api.model.OutletState;
 import org.aqpi.api.model.exception.BadRequestException;
-import org.aqpi.api.model.exception.NotFoundException;
 import org.aqpi.api.model.outlet.NewOutletRequest;
 import org.aqpi.api.model.outlet.OutletInformation;
 import org.aqpi.api.model.outlet.OutletLog;
@@ -47,14 +46,13 @@ public class OutletController {
 	}
 	
 	@RequestMapping(path="/outlets/{name}", method=DELETE)
-	public ResponseEntity<Void> removeOutlet(@PathVariable("name") String name) throws NotFoundException {
+	public ResponseEntity<Void> removeOutlet(@PathVariable("name") String name) {
 		delegate.removeOutlet(name);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(path="/outlets/{name}", method=GET)
-	public ResponseEntity<OutletInformation> getOutlet(@PathVariable("name") String name) throws NotFoundException {
-		delegate.removeOutlet(name);
+	public ResponseEntity<OutletInformation> getOutlet(@PathVariable("name") String name) {
 		return new ResponseEntity<OutletInformation>(delegate.getOutlet(name), HttpStatus.OK);
 	}
 	
